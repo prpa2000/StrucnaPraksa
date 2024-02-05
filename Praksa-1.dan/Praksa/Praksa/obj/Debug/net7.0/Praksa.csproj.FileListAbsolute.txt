@@ -1,0 +1,14 @@
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\bin\Debug\net7.0\Praksa.exe
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\bin\Debug\net7.0\Praksa.deps.json
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\bin\Debug\net7.0\Praksa.runtimeconfig.json
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\bin\Debug\net7.0\Praksa.dll
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\bin\Debug\net7.0\Praksa.pdb
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.AssemblyInfoInputs.cache
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.AssemblyInfo.cs
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.csproj.CoreCompileInputs.cache
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.dll
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\refint\Praksa.dll
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.pdb
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\Praksa.genruntimeconfig.cache
+C:\Users\Korisnik\Desktop\Praksa-1.dan\Praksa\Praksa\obj\Debug\net7.0\ref\Praksa.dll
