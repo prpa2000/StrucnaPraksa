@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Korisnik\\Desktop\\Praksa-1.dan\\Praksa\\Praksa\\Praksa.csproj",
+      "projectUniqueName": "C:\\Users\\Korisnik\\Desktop\\praksa\\StrucnaPraksa\\Praksa-1.dan\\Praksa\\Praksa\\Praksa.csproj",
       "projectName": "Praksa",
-      "projectPath": "C:\\Users\\Korisnik\\Desktop\\Praksa-1.dan\\Praksa\\Praksa\\Praksa.csproj",
+      "projectPath": "C:\\Users\\Korisnik\\Desktop\\praksa\\StrucnaPraksa\\Praksa-1.dan\\Praksa\\Praksa\\Praksa.csproj",
       "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Korisnik\\Desktop\\Praksa-1.dan\\Praksa\\Praksa\\obj\\",
+      "outputPath": "C:\\Users\\Korisnik\\Desktop\\praksa\\StrucnaPraksa\\Praksa-1.dan\\Praksa\\Praksa\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
