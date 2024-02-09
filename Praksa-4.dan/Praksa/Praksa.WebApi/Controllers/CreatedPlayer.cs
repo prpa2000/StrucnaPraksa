@@ -5,36 +5,35 @@ using System.Web;
 
 namespace Praksa.WebApi.Controllers
 {
-    public class Player
+    public class CreatedPlayer
     {
         private int id;
-        private int? footballclubid;
+        private int footballclubid;
         private string firstname;
         private string lastname;
         private int age;
-        private FootballClub footballclub;
 
-        public Player() { }
-        public Player(int id, int? footballclubid, string firstname, string lastname, int age, FootballClub footballclub)
+        public CreatedPlayer() { }
+        public CreatedPlayer(int id, int footballclubid, string firstname, string lastname, int age)
         {
             this.id = id;
             this.footballclubid = footballclubid;
             this.firstname = firstname;
             this.lastname = lastname;
             this.age = age;
-            this.footballclub = footballclub;
+           
         }
 
         public int Id
         {
             get { return id; }
-            set { id = value; } 
+            set { id = value; }
         }
 
-        public int? FootballClubId
+        public int FootballClubId
         {
             get { return footballclubid; }
-            set { footballclubid = value;}
+            set { footballclubid = value; }
         }
 
         public string FirstName
@@ -53,12 +52,6 @@ namespace Praksa.WebApi.Controllers
         {
             get { return age; }
             set { age = value; }
-        }
-
-        public FootballClub FootballClub
-        {
-            get { return footballclub; }
-            set { footballclub = value; }
         }
     }
 }

@@ -16,19 +16,13 @@ namespace Praksa.WebApi.Controllers
     {
 
 
-        private const string CONNECTION_STRING = "Server=127.0.0.1;Port=5432;Database=FootballClub;User Id=postgres;Password=nikolaprpic;";
-
-        NpgsqlConnection connection = new NpgsqlConnection(CONNECTION_STRING);
-
-
-       
-
-
+        private const string connectionString = "Server=127.0.0.1;Port=5432;Database=FootballClub;User Id=postgres;Password=nikolaprpic;";
+        List<FootballClub> footballClubs = new List<FootballClub>();
         public HttpResponseMessage GetAllClubs()
         {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
-                List<FootballClub> footballClubs = new List<FootballClub>();
                 using (connection)
                 {
                     
@@ -62,6 +56,7 @@ namespace Praksa.WebApi.Controllers
 
         public HttpResponseMessage GetClubById(int id)
         {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
@@ -108,6 +103,7 @@ namespace Praksa.WebApi.Controllers
         [System.Web.Http.HttpPost]
         public HttpResponseMessage CreateFootballClub (FootballClub footballClub)
         {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
@@ -138,52 +134,68 @@ namespace Praksa.WebApi.Controllers
 
 
         [System.Web.Http.HttpPut]
-        public HttpResponseMessage UpdateFootballClub(int id,  FootballClub footballclub)
+        public HttpResponseMessage UpdateFootballClub(int id, FootballClub footballclub)
         {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
                 {
                     connection.Open();
-                    NpgsqlCommand cmd = new NpgsqlCommand();
-                    cmd.Connection = connection;
-                    cmd.CommandText = $"UPDATE \"FootballClub\" SET \"Name\" = @Name, \"NumberOfTrophies\" = @NumberOfTrophies WHERE \"Id\" = @Id";
-                    cmd.Parameters.AddWithValue("Id", id);
-                    cmd.Parameters.AddWithValue("Name", footballclub.Name);
-                    cmd.Parameters.AddWithValue("NumberOfTrophies", footballclub.NumberOfTrophies);
-                    cmd.ExecuteNonQuery ();
+                    NpgsqlCommand selectCmd = new NpgsqlCommand();
+                    selectCmd.Connection = connection;
+                    selectCmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                    selectCmd.Parameters.AddWithValue("Id", id);
+                    int count = Convert.ToInt32(selectCmd.ExecuteScalar());
+                    if (count == 0)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound, "Invalid index.");
+                    }
+
+                    NpgsqlCommand updateCmd = new NpgsqlCommand();
+                    updateCmd.Connection = connection;
+                    updateCmd.CommandText = $"UPDATE \"FootballClub\" SET \"Name\" = @Name, \"NumberOfTrophies\" = @NumberOfTrophies WHERE \"Id\" = @Id";
+                    updateCmd.Parameters.AddWithValue("Id", id);
+                    updateCmd.Parameters.AddWithValue("Name", footballclub.Name);
+                    updateCmd.Parameters.AddWithValue("NumberOfTrophies", footballclub.NumberOfTrophies);
+                    updateCmd.ExecuteNonQuery();
                     connection.Close();
+                    return Request.CreateResponse(HttpStatusCode.OK, "Club updated!");
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, "Club updated!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return Request.CreateResponse (HttpStatusCode.InternalServerError, e.Message);  
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
-        
+
+
 
         public HttpResponseMessage DeleteFootballClub(int id)
         {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
                 {
                     connection.Open();
-                    NpgsqlCommand cmd = new NpgsqlCommand();
-                    cmd.Connection = connection;
-                    cmd.CommandText = $"DELETE FROM \"FootballClub\" WHERE \"Id\" = @Id";
-                    cmd.Parameters.AddWithValue("Id", id);
-                    int rowsAffected;
-                    rowsAffected = cmd.ExecuteNonQuery();
-                    if(rowsAffected > 0)
+                    NpgsqlCommand selectcmd = new NpgsqlCommand();
+                    selectcmd.Connection = connection;
+                    selectcmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                    selectcmd.Parameters.AddWithValue("Id", id);
+                    int count = Convert.ToInt32(selectcmd.ExecuteScalar());
+                    if(count == 0)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, "Football club deleted!");
+                        return Request.CreateResponse(HttpStatusCode.NotFound, "Invalid index!");
                     }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.NotFound, "Invalid index");
-                    }
+                    
+                    NpgsqlCommand deletecmd = new NpgsqlCommand();
+                    deletecmd.Connection = connection;
+                    deletecmd.CommandText = $"DELETE FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                    deletecmd.Parameters.AddWithValue("Id", id);
+                    deletecmd.ExecuteNonQuery();
+                    connection.Close();
+                    return Request.CreateResponse(HttpStatusCode.OK, "Club deleted!");
                 }
             }
             catch (Exception e)
