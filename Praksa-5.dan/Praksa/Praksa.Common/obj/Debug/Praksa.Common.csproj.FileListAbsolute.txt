@@ -1,0 +1,6 @@
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\bin\Debug\Praksa.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\bin\Debug\Praksa.Common.pdb
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\obj\Debug\Praksa.Common.csproj.AssemblyReference.cache
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\obj\Debug\Praksa.Common.csproj.CoreCompileInputs.cache
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\obj\Debug\Praksa.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Common\obj\Debug\Praksa.Common.pdb

@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Praksa.DAL",
+    "\\Praksa.Model",
+    "\\Praksa.Repository.Common",
+    "\\Praksa.WebApi",
+    "\\Praksa.WebApi\\Controllers"
+  ],
+  "SelectedNode": "\\Praksa.WebApi\\Controllers\\PlayerController.cs",
+  "PreviewInSolutionExplorer": false
+}

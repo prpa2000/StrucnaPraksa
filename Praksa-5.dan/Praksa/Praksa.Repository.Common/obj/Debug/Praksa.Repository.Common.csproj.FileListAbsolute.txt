@@ -1,0 +1,11 @@
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Repository.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Repository.Common.pdb
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Model.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Model.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Model.Common.pdb
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\bin\Debug\Praksa.Model.pdb
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\obj\Debug\Praksa.Repository.Common.csproj.AssemblyReference.cache
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\obj\Debug\Praksa.Repository.Common.csproj.CoreCompileInputs.cache
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\obj\Debug\Praksa.Repository.Common.csproj.CopyComplete
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\obj\Debug\Praksa.Repository.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-4.dan\Praksa\Praksa.Repository.Common\obj\Debug\Praksa.Repository.Common.pdb
