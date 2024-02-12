@@ -18,51 +18,51 @@ namespace Praksa.Service
             this.playerRepository = playerRepository;
         }
 
-        public List<Player> GetAllPlayers()
+        public async Task<List<Player>> GetAllPlayersAsync()
         {
             try
             {
-                return playerRepository.GetAllPlayers();
+                return await playerRepository.GetAllPlayersAsync();
             }
             catch
             {
                 return null;
             }
         }
-        public Player GetPlayerById(int id)
+        public async Task<Player> GetPlayerByIdAsync(int id)
         {
             try
             {
-                return playerRepository.GetPlayerById(id);
+                return await playerRepository.GetPlayerByIdAsync(id);
             }
             catch { return null; }
         }
-        public void CreatePlayer(CreatedPlayer player)
+        public async Task CreatePlayerAsync(CreatedPlayer player)
         {
             try
             {
-                playerRepository.CreatePlayer(player);
+               await playerRepository.CreatePlayerAsync(player);
             }
             catch {
                 throw;
             }
         }
-        public void UpdatePlayer(int id, UpdatedPlayer player)
+        public async Task UpdatePlayerAsync(int id, UpdatedPlayer player)
         {
             try
             {
-                playerRepository.UpdatePlayer(id, player);
+               await playerRepository.UpdatePlayerAsync(id, player);
             }
             catch
             {
                 throw;
             }
         }
-        public void DeletePlayer(int id)
+        public async Task DeletePlayerAsync(int id)
         {
             try
             {
-                playerRepository.DeletePlayer(id);
+                await playerRepository.DeletePlayerAsync(id);
             }
             catch
             {

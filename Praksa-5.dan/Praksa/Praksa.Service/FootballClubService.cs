@@ -19,11 +19,11 @@ namespace Praksa.Service
             this.footballclubrepository = footballclubrepository;
         }
 
-        public List<FootballClub> GetAllClubs()
+        public async Task<List<FootballClub>> GetAllClubsAsync()
         {
             try
             {
-                return footballclubrepository.GetAllClubs();
+                return await footballclubrepository.GetAllClubsAsync();
             }
             catch 
             {
@@ -32,11 +32,11 @@ namespace Praksa.Service
             }
         }
 
-        public FootballClub GetClubById(int id)
+        public async Task<FootballClub> GetClubByIdAsync(int id)
         {
             try
             {
-                return footballclubrepository.GetClubById(id);
+                return await footballclubrepository.GetClubByIdAsync(id);
             }
             catch(Exception ex)
             {
@@ -44,16 +44,16 @@ namespace Praksa.Service
             }
         }
 
-        public void CreateFootballClub(FootballClub footballClub)
+        public async Task CreateFootballClubAsync(FootballClub footballClub)
         {
-            footballclubrepository.CreateFootballClub(footballClub);
+            await footballclubrepository.CreateFootballClubAsync(footballClub);
         }
         
-        public void UpdateFootballClub(int id, FootballClub footballClub)
+        public async Task UpdateFootballClubAsync(int id, FootballClub footballClub)
         {
             try
             {
-                footballclubrepository.UpdateFootballClub(id, footballClub);
+                await footballclubrepository.UpdateFootballClubAsync(id, footballClub);
             }
             catch
             {
@@ -61,11 +61,11 @@ namespace Praksa.Service
             }
         }
 
-        public void DeleteFootballClub(int id)
+        public async Task DeleteFootballClubAsync(int id)
         {
             try
             {
-                footballclubrepository.DeleteFootballClub(id);
+                await footballclubrepository.DeleteFootballClubAsync(id);
             }
             catch
             {

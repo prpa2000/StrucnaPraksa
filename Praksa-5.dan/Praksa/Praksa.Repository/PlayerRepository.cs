@@ -15,7 +15,7 @@ namespace Praksa.Repository
     public class PlayerRepository : IPlayerRepository
     {
         FootballClubCommon fccommon = new FootballClubCommon();
-        public List<Player> GetAllPlayers()
+        public async Task<List<Player>> GetAllPlayersAsync()
         {
             List<Player> players = new List<Player>();
             NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
@@ -24,12 +24,12 @@ namespace Praksa.Repository
 
                 using (connection)
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     NpgsqlCommand cmd = new NpgsqlCommand();
                     cmd.Connection = connection;
                     cmd.CommandText = $"SELECT * FROM \"FootballClub\" INNER JOIN \"Player\" ON \"FootballClub\".\"Id\" = \"Player\".\"FootballClubId\"";
-                    NpgsqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    while (await reader.ReadAsync())
                     {
                         int id = (int)reader["Id"];
                         int? footballclubid = reader["FootballClubId"] as int?;
@@ -39,9 +39,9 @@ namespace Praksa.Repository
                         FootballClub footballclub = null;
                         NpgsqlCommand cmdclub = new NpgsqlCommand();
                         cmdclub.Connection = connection;
-                        NpgsqlDataReader clubReader = cmdclub.ExecuteReader();
+                        NpgsqlDataReader clubReader = await cmdclub.ExecuteReaderAsync();
 
-                        if (clubReader.Read())
+                        if (await clubReader.ReadAsync())
                         {
                             footballclub = new FootballClub
                             {
@@ -50,7 +50,7 @@ namespace Praksa.Repository
                                 NumberOfTrophies = (int)clubReader["NumberOfTrophies"]
                             };
                         }
-                        clubReader.Close();
+                        await clubReader.CloseAsync();
 
                         Player player = new Player()
                         {
@@ -63,9 +63,9 @@ namespace Praksa.Repository
                         };
                         players.Add(player);
                     }
-                    reader.Close();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
+                    await reader.CloseAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    await connection.CloseAsync();
                 }
                 return players;
             }
@@ -75,20 +75,20 @@ namespace Praksa.Repository
             }
         }
 
-        public Player GetPlayerById(int id)
+        public async Task<Player> GetPlayerByIdAsync(int id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
             try
             {
                 using (connection)
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     NpgsqlCommand cmd = new NpgsqlCommand();
                     cmd.Connection = connection;
                     cmd.CommandText = $"SELECT * FROM \"Player\" WHERE \"Id\" = @Id";
                     cmd.Parameters.AddWithValue("Id", id);
-                    NpgsqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    if (await reader.ReadAsync())
                     {
                         int? footballclubid = reader["FootballClubId"] as int?;
                         string firstname = reader["FirstName"] as string;
@@ -98,9 +98,9 @@ namespace Praksa.Repository
                         FootballClub footballclub = null;
                         NpgsqlCommand cmdclub = new NpgsqlCommand();
                         cmdclub.Connection = connection;
-                        NpgsqlDataReader clubReader = cmdclub.ExecuteReader();
+                        NpgsqlDataReader clubReader = await cmdclub.ExecuteReaderAsync();
 
-                        if (clubReader.Read())
+                        if (await clubReader.ReadAsync())
                         {
                             footballclub = new FootballClub
                             {
@@ -109,7 +109,7 @@ namespace Praksa.Repository
                                 NumberOfTrophies = (int)clubReader["NumberOfTrophies"]
                             };
                         }
-                        clubReader.Close();
+                        await clubReader.CloseAsync();
 
                         Player player = new Player()
                         {
@@ -121,9 +121,9 @@ namespace Praksa.Repository
                             FootballClub = footballclub,
                         };
 
-                        reader.Close();
-                        cmd.ExecuteNonQuery();
-                        connection.Close();
+                        await reader.CloseAsync();
+                        await cmd.ExecuteNonQueryAsync();
+                        await connection.CloseAsync();
                         return player;
                     }
                     else
@@ -138,14 +138,14 @@ namespace Praksa.Repository
             }
         }
 
-        public void CreatePlayer(CreatedPlayer player)
+        public async Task CreatePlayerAsync(CreatedPlayer player)
         {
             NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
             try
             {
                 using (connection)
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     NpgsqlCommand cmd = new NpgsqlCommand();
                     cmd.Connection = connection;
                     cmd.CommandText = $"INSERT INTO \"Player\" (\"Id\", \"FootballClubId\", \"FirstName\", \"LastName\", \"Age\") VALUES (@Id, @FootballClubId, @FirstName, @LastName, @Age)";
@@ -154,8 +154,8 @@ namespace Praksa.Repository
                     cmd.Parameters.AddWithValue("FirstName", player.FirstName);
                     cmd.Parameters.AddWithValue("LastName", player.LastName);
                     cmd.Parameters.AddWithValue("Age", player.Age);
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
+                    await cmd.ExecuteNonQueryAsync();
+                    await connection.CloseAsync();
                 }
 
                 
@@ -168,19 +168,19 @@ namespace Praksa.Repository
             }
         }
 
-        public void UpdatePlayer(int id, UpdatedPlayer player)
+        public async Task UpdatePlayerAsync(int id, UpdatedPlayer player)
         {
             NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
             try
             {
                 using (connection)
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     NpgsqlCommand selectcmd = new NpgsqlCommand();
                     selectcmd.Connection = connection;
                     selectcmd.CommandText = $"SELECT COUNT(*) FROM \"Player\" WHERE \"Id\" = @Id";
                     selectcmd.Parameters.AddWithValue("Id", id);
-                    int count = Convert.ToInt32(selectcmd.ExecuteScalar());
+                    int count = Convert.ToInt32(selectcmd.ExecuteScalarAsync());
                     try
                     {
                         if (count > 0)
@@ -193,8 +193,8 @@ namespace Praksa.Repository
                             updatecmd.Parameters.AddWithValue("FirstName", player.FirstName);
                             updatecmd.Parameters.AddWithValue("LastName", player.LastName);
                             updatecmd.Parameters.AddWithValue("Age", player.Age);
-                            updatecmd.ExecuteNonQuery();
-                            connection.Close();
+                            await updatecmd.ExecuteNonQueryAsync();
+                            await connection.CloseAsync();
                         }
                     }
                     catch
@@ -213,19 +213,19 @@ namespace Praksa.Repository
             }
         }
 
-        public void DeletePlayer(int id)
+        public async Task DeletePlayerAsync(int id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
             try
             {
                 using (connection)
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
                     NpgsqlCommand selectcmd = new NpgsqlCommand();
                     selectcmd.Connection = connection;
                     selectcmd.CommandText = $"SELECT COUNT(*) FROM \"Player\" WHERE \"Id\" = @Id";
                     selectcmd.Parameters.AddWithValue("Id", id);
-                    int count = Convert.ToInt32(selectcmd.ExecuteScalar());
+                    int count = Convert.ToInt32(selectcmd.ExecuteScalarAsync());
                     try
                     {
                         if (count > 0)
@@ -234,8 +234,8 @@ namespace Praksa.Repository
                             deletecmd.Connection = connection;
                             deletecmd.CommandText = $"DELETE FROM \"Player\" WHERE \"Id\" = @Id";
                             deletecmd.Parameters.AddWithValue("Id", id);
-                            deletecmd.ExecuteNonQuery();
-                            connection.Close();
+                            await deletecmd.ExecuteNonQueryAsync();
+                            await connection.CloseAsync();
 
                         }
                     }

@@ -12,10 +12,10 @@ namespace Praksa.Repository.Common
 {
     public interface IPlayerRepository
     {
-        List<Player> GetAllPlayers();
-        Player GetPlayerById(int id);
-        void CreatePlayer(CreatedPlayer player);
-        void UpdatePlayer(int id, UpdatedPlayer player);
-        void DeletePlayer(int id);
+        Task<List<Player>> GetAllPlayersAsync();
+        Task<Player> GetPlayerByIdAsync(int id);
+        Task CreatePlayerAsync(CreatedPlayer player);
+        Task UpdatePlayerAsync(int id, UpdatedPlayer player);
+        Task DeletePlayerAsync(int id);
     }
 }

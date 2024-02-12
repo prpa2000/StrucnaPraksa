@@ -355,6 +355,10 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Praksa.Common\Praksa.Common.csproj">
+      <Project>{F0E6AB0B-7617-44B5-8DD7-1C07BB62577B}</Project>
+      <Name>Praksa.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Praksa.Model.Common\Praksa.Model.Common.csproj">
       <Project>{322963bf-5c50-45f3-8daa-779f370ba14c}</Project>
       <Name>Praksa.Model.Common</Name>
@@ -362,6 +366,10 @@
     <ProjectReference Include="..\Praksa.Model\Praksa.Model.csproj">
       <Project>{88be78c2-dc7d-4653-9176-e9998473f250}</Project>
       <Name>Praksa.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Praksa.Service.Common\Praksa.Service.Common.csproj">
+      <Project>{BB2E7F4A-87F2-4738-9BC9-5EE88DCF2C91}</Project>
+      <Name>Praksa.Service.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

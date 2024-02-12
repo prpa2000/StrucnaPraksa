@@ -2,10 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\Praksa",
+    "\\Praksa\\Praksa.Model",
     "\\Praksa\\Praksa.Service.Common",
     "\\Praksa\\Praksa.WebApi",
     "\\Praksa\\Praksa.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\Praksa\\Praksa.Service.Common\\IPlayerService.cs",
+  "SelectedNode": "\\Praksa\\Praksa.Model\\CreatedPlayer.cs",
   "PreviewInSolutionExplorer": false
 }

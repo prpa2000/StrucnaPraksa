@@ -10,10 +10,10 @@ namespace Praksa.Service.Common
 {
     public interface IFootballClubService
     {
-        List<FootballClub> GetAllClubs();
-        FootballClub GetClubById(int id);
-        void CreateFootballClub(FootballClub footballClub);
-        void UpdateFootballClub(int id, FootballClub footballClub);
-        void DeleteFootballClub(int id);
+        Task<List<FootballClub>> GetAllClubsAsync();
+        Task<FootballClub> GetClubByIdAsync(int id);
+        Task CreateFootballClubAsync(FootballClub footballClub);
+        Task UpdateFootballClubAsync(int id, FootballClub footballClub);
+        Task DeleteFootballClubAsync(int id);
     }
 }
