@@ -1,7 +1,7 @@
 ﻿using Praksa.Model;
 using Praksa.Repository.Common;
 using Praksa.Service.Common;
-using Praksa.WebApi.Controllers;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +12,17 @@ namespace Praksa.Service
 {
     public class PlayerService : IPlayerService
     {
-        IPlayerRepository playerRepository;
+        IPlayerRepository PlayerRepository { get; set; }
         public PlayerService(IPlayerRepository playerRepository)
         {
-            this.playerRepository = playerRepository;
+           PlayerRepository = playerRepository;
         }
 
         public async Task<List<Player>> GetAllPlayersAsync()
         {
             try
             {
-                return await playerRepository.GetAllPlayersAsync();
+                return await PlayerRepository.GetAllPlayersAsync();
             }
             catch
             {
@@ -33,7 +33,7 @@ namespace Praksa.Service
         {
             try
             {
-                return await playerRepository.GetPlayerByIdAsync(id);
+                return await PlayerRepository.GetPlayerByIdAsync(id);
             }
             catch { return null; }
         }
@@ -41,7 +41,7 @@ namespace Praksa.Service
         {
             try
             {
-               await playerRepository.CreatePlayerAsync(player);
+               await PlayerRepository.CreatePlayerAsync(player);
             }
             catch {
                 throw;
@@ -51,7 +51,7 @@ namespace Praksa.Service
         {
             try
             {
-               await playerRepository.UpdatePlayerAsync(id, player);
+               await PlayerRepository.UpdatePlayerAsync(id, player);
             }
             catch
             {
@@ -62,7 +62,7 @@ namespace Praksa.Service
         {
             try
             {
-                await playerRepository.DeletePlayerAsync(id);
+                await PlayerRepository.DeletePlayerAsync(id);
             }
             catch
             {

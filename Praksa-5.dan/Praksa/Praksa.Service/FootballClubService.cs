@@ -13,17 +13,17 @@ namespace Praksa.Service
     public class FootballClubService : IFootballClubService
     {
 
-        IFootballClubRepository footballclubrepository;
+        IFootballClubRepository FootballClubRepository { get; set; }
         public FootballClubService(IFootballClubRepository footballclubrepository)
         {
-            this.footballclubrepository = footballclubrepository;
+            FootballClubRepository = footballclubrepository;
         }
 
         public async Task<List<FootballClub>> GetAllClubsAsync()
         {
             try
             {
-                return await footballclubrepository.GetAllClubsAsync();
+                return await FootballClubRepository.GetAllClubsAsync();
             }
             catch 
             {
@@ -36,7 +36,7 @@ namespace Praksa.Service
         {
             try
             {
-                return await footballclubrepository.GetClubByIdAsync(id);
+                return await FootballClubRepository.GetClubByIdAsync(id);
             }
             catch(Exception ex)
             {
@@ -46,14 +46,14 @@ namespace Praksa.Service
 
         public async Task CreateFootballClubAsync(FootballClub footballClub)
         {
-            await footballclubrepository.CreateFootballClubAsync(footballClub);
+            await FootballClubRepository.CreateFootballClubAsync(footballClub);
         }
         
         public async Task UpdateFootballClubAsync(int id, FootballClub footballClub)
         {
             try
             {
-                await footballclubrepository.UpdateFootballClubAsync(id, footballClub);
+                await FootballClubRepository.UpdateFootballClubAsync(id, footballClub);
             }
             catch
             {
@@ -65,7 +65,7 @@ namespace Praksa.Service
         {
             try
             {
-                await footballclubrepository.DeleteFootballClubAsync(id);
+                await FootballClubRepository.DeleteFootballClubAsync(id);
             }
             catch
             {

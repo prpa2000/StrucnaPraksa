@@ -18,15 +18,17 @@ namespace Praksa.WebApi.Controllers
 {
     public class PlayerController : ApiController
     {
-        IPlayerService playerService;
-       
-
+        IPlayerService PlayerServicer { get; set; }
+       public PlayerController(IPlayerService playerServicer)
+        {
+            PlayerServicer = playerServicer;
+        }
 
         public async Task<List<Player>> GetAllPlayersAsync()
         {
             try
             {
-                return await playerService.GetAllPlayersAsync();
+                return await PlayerServicer.GetAllPlayersAsync();
             }
             catch {
                 throw;
@@ -37,7 +39,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                return await playerService.GetPlayerByIdAsync(id);
+                return await PlayerServicer.GetPlayerByIdAsync(id);
             }
             catch
             {
@@ -51,7 +53,7 @@ namespace Praksa.WebApi.Controllers
             {
             try
             {
-                 await playerService.CreatePlayerAsync(player);
+                 await PlayerServicer.CreatePlayerAsync(player);
             }
             catch
             {
@@ -65,7 +67,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                await playerService.UpdatePlayerAsync(id, player);
+                await PlayerServicer.UpdatePlayerAsync(id, player);
             }
             catch
             {
@@ -77,7 +79,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                await playerService.DeletePlayerAsync(id);
+                await PlayerServicer.DeletePlayerAsync(id);
             }
             catch
             {

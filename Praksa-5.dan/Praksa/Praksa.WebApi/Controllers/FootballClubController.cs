@@ -18,13 +18,17 @@ namespace Praksa.WebApi.Controllers
     public class FootballClubController : ApiController
     {
 
-        IFootballClubService footballClubService;
+        IFootballClubService FootballClubServicer { get; set; }
         
+        public FootballClubController(IFootballClubService footballClubService)
+        {
+            FootballClubServicer = footballClubService;
+        }
         public async Task<List<FootballClub>> GetAllClubsAsync()
         {
             try
             {
-                return await footballClubService.GetAllClubsAsync();
+                return await FootballClubServicer.GetAllClubsAsync();
             }
             catch
             {
@@ -38,7 +42,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                return await footballClubService.GetClubByIdAsync(id);
+                return await FootballClubServicer.GetClubByIdAsync(id);
             }
             catch
             {
@@ -53,7 +57,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                await footballClubService.CreateFootballClubAsync(footballClub);
+                await FootballClubServicer.CreateFootballClubAsync(footballClub);
             }
             catch
             {
@@ -69,7 +73,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                await footballClubService.UpdateFootballClubAsync(id, footballclub);
+                await FootballClubServicer.UpdateFootballClubAsync(id, footballclub);
             }
             catch
             {
@@ -83,7 +87,7 @@ namespace Praksa.WebApi.Controllers
         {
             try
             {
-                await footballClubService.DeleteFootballClubAsync(id);
+                await FootballClubServicer.DeleteFootballClubAsync(id);
             }
             catch
             {

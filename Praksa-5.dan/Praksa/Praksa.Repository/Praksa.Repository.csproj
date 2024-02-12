@@ -94,10 +94,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Praksa-4.dan\Praksa\Praksa.WebApi\Praksa.WebApi.csproj">
-      <Project>{503BAAD7-F80D-42D9-BBBC-36913378B615}</Project>
-      <Name>Praksa.WebApi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Praksa.Common\Praksa.Common.csproj">
       <Project>{F0E6AB0B-7617-44B5-8DD7-1C07BB62577B}</Project>
       <Name>Praksa.Common</Name>

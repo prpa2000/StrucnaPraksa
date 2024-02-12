@@ -46,10 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Praksa-4.dan\Praksa\Praksa.WebApi\Praksa.WebApi.csproj">
-      <Project>{503BAAD7-F80D-42D9-BBBC-36913378B615}</Project>
-      <Name>Praksa.WebApi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Praksa.Model\Praksa.Model.csproj">
       <Project>{88BE78C2-DC7D-4653-9176-E9998473F250}</Project>
       <Name>Praksa.Model</Name>
@@ -62,6 +58,9 @@
       <Project>{BB2E7F4A-87F2-4738-9BC9-5EE88DCF2C91}</Project>
       <Name>Praksa.Service.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
