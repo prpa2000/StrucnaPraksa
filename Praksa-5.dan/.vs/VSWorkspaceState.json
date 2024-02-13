@@ -3,10 +3,12 @@
     "",
     "\\Praksa",
     "\\Praksa\\Praksa.Model",
+    "\\Praksa\\Praksa.Repository",
+    "\\Praksa\\Praksa.Service",
     "\\Praksa\\Praksa.Service.Common",
     "\\Praksa\\Praksa.WebApi",
     "\\Praksa\\Praksa.WebApi\\Controllers"
   ],
-  "SelectedNode": "\\Praksa\\Praksa.sln",
+  "SelectedNode": "\\Praksa\\Praksa.Repository\\FootballClubRepository.cs",
   "PreviewInSolutionExplorer": false
 }

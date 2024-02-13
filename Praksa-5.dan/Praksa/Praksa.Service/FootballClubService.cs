@@ -8,26 +8,29 @@ using Praksa.Repository;
 
 using Praksa.Service.Common;
 using Praksa.Model;
+using System.Net.Http;
+using System.Net;
+using Praksa.Common;
 namespace Praksa.Service
 {
     public class FootballClubService : IFootballClubService
     {
 
-        IFootballClubRepository FootballClubRepository { get; set; }
-        public FootballClubService(IFootballClubRepository footballclubrepository)
+        public IFootballClubRepository FootballClubRepository { get; }
+
+        public FootballClubService(IFootballClubRepository footballClubRepository)
         {
-            FootballClubRepository = footballclubrepository;
+            FootballClubRepository = footballClubRepository;
         }
 
-        public async Task<List<FootballClub>> GetAllClubsAsync()
+        public async Task<List<FootballClub>> GetAllClubsAsync(Paging paging, Sorting sorting, FootballClubFiltering filters)
         {
             try
             {
-                return await FootballClubRepository.GetAllClubsAsync();
+               return await FootballClubRepository.GetAllClubsAsync(paging, sorting, filters);
             }
-            catch 
+            catch
             {
-               
                 throw;
             }
         }
@@ -46,7 +49,16 @@ namespace Praksa.Service
 
         public async Task CreateFootballClubAsync(FootballClub footballClub)
         {
-            await FootballClubRepository.CreateFootballClubAsync(footballClub);
+            try
+            {
+               await FootballClubRepository.CreateFootballClubAsync(footballClub);
+                
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         
         public async Task UpdateFootballClubAsync(int id, FootballClub footballClub)
@@ -54,10 +66,11 @@ namespace Praksa.Service
             try
             {
                 await FootballClubRepository.UpdateFootballClubAsync(id, footballClub);
+               
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -65,11 +78,12 @@ namespace Praksa.Service
         {
             try
             {
-                await FootballClubRepository.DeleteFootballClubAsync(id);
+              await FootballClubRepository.DeleteFootballClubAsync(id);
+               
             }
-            catch
+            catch(Exception ex) 
             {
-                throw;
+                throw ex;
             }
 
         }

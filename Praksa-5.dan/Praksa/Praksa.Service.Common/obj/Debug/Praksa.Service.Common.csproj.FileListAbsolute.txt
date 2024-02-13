@@ -20,3 +20,5 @@ C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Servic
 C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Service.Common\obj\Debug\Praksa.Service.Common.csproj.CopyComplete
 C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Service.Common\obj\Debug\Praksa.Service.Common.dll
 C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Service.Common\obj\Debug\Praksa.Service.Common.pdb
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Service.Common\bin\Debug\Praksa.Common.dll
+C:\Users\Korisnik\Desktop\praksa\StrucnaPraksa\Praksa-5.dan\Praksa\Praksa.Service.Common\bin\Debug\Praksa.Common.pdb

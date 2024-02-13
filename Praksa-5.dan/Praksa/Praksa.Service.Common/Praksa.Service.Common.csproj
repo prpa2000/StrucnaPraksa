@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Praksa.Common\Praksa.Common.csproj">
+      <Project>{F0E6AB0B-7617-44B5-8DD7-1C07BB62577B}</Project>
+      <Name>Praksa.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Praksa.Model.Common\Praksa.Model.Common.csproj">
       <Project>{322963bf-5c50-45f3-8daa-779f370ba14c}</Project>
       <Name>Praksa.Model.Common</Name>

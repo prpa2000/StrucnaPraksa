@@ -1,10 +1,12 @@
-﻿using Praksa.Model;
+﻿using Praksa.Common;
+using Praksa.Model;
 using Praksa.Repository.Common;
 using Praksa.Service.Common;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,15 +20,15 @@ namespace Praksa.Service
            PlayerRepository = playerRepository;
         }
 
-        public async Task<List<Player>> GetAllPlayersAsync()
+        public async Task<List<Player>> GetAllPlayersAsync(Paging paging, Sorting sorting, PlayerFiltering filters)
         {
             try
             {
-                return await PlayerRepository.GetAllPlayersAsync();
+                return await PlayerRepository.GetAllPlayersAsync(paging, sorting, filters);
             }
-            catch
+            catch(Exception e)
             {
-                return null;
+                throw e;
             }
         }
         public async Task<Player> GetPlayerByIdAsync(int id)
@@ -42,31 +44,34 @@ namespace Praksa.Service
             try
             {
                await PlayerRepository.CreatePlayerAsync(player);
+               
             }
-            catch {
-                throw;
+            catch(Exception e) {
+                throw e;
             }
         }
         public async Task UpdatePlayerAsync(int id, UpdatedPlayer player)
         {
             try
             {
-               await PlayerRepository.UpdatePlayerAsync(id, player);
+              await PlayerRepository.UpdatePlayerAsync(id, player);
+               
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                throw e;
             }
         }
         public async Task DeletePlayerAsync(int id)
         {
             try
             {
-                await PlayerRepository.DeletePlayerAsync(id);
+               await PlayerRepository.DeletePlayerAsync(id);
+               
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                throw e;
             }
         }
     }

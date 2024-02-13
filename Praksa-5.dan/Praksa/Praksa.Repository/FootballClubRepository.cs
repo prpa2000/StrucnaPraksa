@@ -8,29 +8,56 @@ using System.Threading.Tasks;
 using Praksa.Repository.Common;
 
 using System.Net.Http;
-using Praksa.Common;
+
 using System.Diagnostics;
 using Praksa.Model;
+using Praksa.Common;
 namespace Praksa.Repository
 {
     public class FootballClubRepository : IFootballClubRepository
     {
-        FootballClubCommon fccommon = new FootballClubCommon();
-        
-        public async Task<List<FootballClub>> GetAllClubsAsync()
+        const string connectionString = "Server=127.0.0.1;Port=5432;Database=FootballClub;User Id=postgres;Password=nikolaprpic;";
+
+        public async Task<List<FootballClub>> GetAllClubsAsync(Paging paging, Sorting sorting, FootballClubFiltering filters)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 List<FootballClub> footballClubs = new List<FootballClub>();
                 using (connection)
                 {
-
                     await connection.OpenAsync();
                     NpgsqlCommand cmd = new NpgsqlCommand();
                     cmd.Connection = connection;
-                    cmd.CommandText = $"SELECT * FROM \"FootballClub\" ";
+
+                    StringBuilder queryBuilder = new StringBuilder("SELECT * FROM \"FootballClub\" WHERE 1=1");
+
+                    if (!string.IsNullOrEmpty(filters.Name))
+                    {
+                        queryBuilder.Append($" AND \"Name\" LIKE @Name");
+                        cmd.Parameters.AddWithValue("@Name", $"%{filters.Name}%");
+                    }
+                    if (filters.NumberOfTrophies.HasValue)
+                    {
+                        queryBuilder.Append($" AND \"NumberOfTrophies\" = @NumberOfTrophies");
+                        cmd.Parameters.AddWithValue("@NumberOfTrophies", $"{filters.NumberOfTrophies}");
+                    }
+
+                    if (!string.IsNullOrEmpty(sorting.SortBy))
+                    {
+                        queryBuilder.Append($" ORDER BY \"{sorting.SortBy}\" {sorting.SortOrder}");  
+                    }
+
+                    if (paging.PageNumber >= 0 && paging.PageSize > 0)
+                    {
+                        queryBuilder.Append($" OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY");
+                        cmd.Parameters.AddWithValue("@Offset", (paging.PageNumber - 1) * paging.PageSize);
+                        cmd.Parameters.AddWithValue("@PageSize", paging.PageSize);
+                    }
+
+                    cmd.CommandText = queryBuilder.ToString();
                     NpgsqlDataReader reader = await cmd.ExecuteReaderAsync();
+
                     while (await reader.ReadAsync())
                     {
                         FootballClub footballClub = new FootballClub
@@ -39,23 +66,22 @@ namespace Praksa.Repository
                             Name = reader["Name"].ToString(),
                             NumberOfTrophies = (int)reader["NumberOfTrophies"]
                         };
-
                         footballClubs.Add(footballClub);
                     }
-                    return footballClubs;
 
+                    return footballClubs;
                 }
             }
-
-            catch 
+            catch
             {
                 return null;
             }
         }
+
         public async Task<FootballClub> GetClubByIdAsync(int id)
         {
 
-            NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
@@ -91,16 +117,16 @@ namespace Praksa.Repository
             }
 
 
-            catch 
+            catch
             {
                 return null;
             }
 
         }
-        public async Task CreateFootballClubAsync(FootballClub footballClub)
+        public async Task<HttpResponseMessage> CreateFootballClubAsync(FootballClub footballClub)
         {
 
-            NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
                 using (connection)
@@ -115,96 +141,118 @@ namespace Praksa.Repository
                     await connection.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                     await connection.CloseAsync();
+
                 }
 
 
-                
+                return new HttpResponseMessage(HttpStatusCode.Created)
+                {
+                    Content = new StringContent("Football club created successfully.")
+                };
             }
-            catch 
+
+            catch (Exception ex)
             {
-                throw;
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message)
+                };
             }
 
         }
-        public async Task UpdateFootballClubAsync(int id, FootballClub footballclub)
+        public async Task<HttpResponseMessage> UpdateFootballClubAsync(int id, FootballClub footballclub)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
-                using (connection)
-                {
-                    await connection.OpenAsync();
-                    NpgsqlCommand selectCmd = new NpgsqlCommand();
-                    selectCmd.Connection = connection;
-                    selectCmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
-                    selectCmd.Parameters.AddWithValue("Id", id);
-                    int count = Convert.ToInt32(selectCmd.ExecuteScalarAsync());
-                    try
-                    {
-                        if (count > 0)
-                        {
-                            NpgsqlCommand updateCmd = new NpgsqlCommand();
-                            updateCmd.Connection = connection;
-                            updateCmd.CommandText = $"UPDATE \"FootballClub\" SET \"Name\" = @Name, \"NumberOfTrophies\" = @NumberOfTrophies WHERE \"Id\" = @Id";
-                            updateCmd.Parameters.AddWithValue("Id", id);
-                            updateCmd.Parameters.AddWithValue("Name", footballclub.Name);
-                            updateCmd.Parameters.AddWithValue("NumberOfTrophies", footballclub.NumberOfTrophies);
-                            await updateCmd.ExecuteNonQueryAsync();
-                            await connection.CloseAsync();
-                        }
-                    }
-                    catch
-                    {
-                        throw;
-                    }
+                await connection.OpenAsync();
 
-                   
-                   
+                NpgsqlCommand selectCmd = new NpgsqlCommand();
+                selectCmd.Connection = connection;
+                selectCmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                selectCmd.Parameters.AddWithValue("Id", id);
+                int count = Convert.ToInt32(await selectCmd.ExecuteScalarAsync());
+
+                if (count > 0)
+                {
+                    NpgsqlCommand updateCmd = new NpgsqlCommand();
+                    updateCmd.Connection = connection;
+                    updateCmd.CommandText = $"UPDATE \"FootballClub\" SET \"Name\" = @Name, \"NumberOfTrophies\" = @NumberOfTrophies WHERE \"Id\" = @Id";
+                    updateCmd.Parameters.AddWithValue("Id", id);
+                    updateCmd.Parameters.AddWithValue("Name", footballclub.Name);
+                    updateCmd.Parameters.AddWithValue("NumberOfTrophies", footballclub.NumberOfTrophies);
+                    await updateCmd.ExecuteNonQueryAsync();
+                    await connection.CloseAsync();
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Football club updated!")
+                    };
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("Football club not found.")
+                    };
                 }
             }
-            catch 
+            catch (Exception ex)
             {
-                
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message)
+                };
             }
         }
-        public async Task DeleteFootballClubAsync(int id)
+
+        public async Task<HttpResponseMessage> DeleteFootballClubAsync(int id)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(fccommon.ConnectionString);
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             try
             {
-                using (connection)
-                {
-                    await connection.OpenAsync();
-                    NpgsqlCommand selectcmd = new NpgsqlCommand();
-                    selectcmd.Connection = connection;
-                    selectcmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
-                    selectcmd.Parameters.AddWithValue("Id", id);
-                    int count = Convert.ToInt32(selectcmd.ExecuteScalarAsync());
-                    try
-                    {
-                        if (count > 0)
-                        {
-                            NpgsqlCommand deletecmd = new NpgsqlCommand();
-                            deletecmd.Connection = connection;
-                            deletecmd.CommandText = $"DELETE FROM \"FootballClub\" WHERE \"Id\" = @Id";
-                            deletecmd.Parameters.AddWithValue("Id", id);
-                            await deletecmd.ExecuteNonQueryAsync();
-                            await connection.CloseAsync();
-                        }
-                    }
-                    catch
-                    {
-                        throw;
-                    }
+                await connection.OpenAsync();
 
-                   
-                   
+                NpgsqlCommand selectcmd = new NpgsqlCommand();
+                selectcmd.Connection = connection;
+                selectcmd.CommandText = $"SELECT COUNT(*) FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                selectcmd.Parameters.AddWithValue("Id", id);
+                int count = Convert.ToInt32(await selectcmd.ExecuteScalarAsync());
+
+                if (count > 0)
+                {
+                    NpgsqlCommand deletecmd = new NpgsqlCommand();
+                    deletecmd.Connection = connection;
+                    deletecmd.CommandText = $"DELETE FROM \"FootballClub\" WHERE \"Id\" = @Id";
+                    deletecmd.Parameters.AddWithValue("Id", id);
+                    await deletecmd.ExecuteNonQueryAsync();
+                    await connection.CloseAsync();
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Football club deleted!")
+                    };
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("Football club not found.")
+                    };
                 }
             }
-            catch 
+            catch (Exception ex)
             {
-                throw;
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message)
+                };
             }
         }
+
     }
 }
+            
+
+
+  

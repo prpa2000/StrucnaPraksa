@@ -18,7 +18,6 @@ namespace Praksa.WebApi.App_Start
         {
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-            
             builder.RegisterType<FootballClubService>().As<IFootballClubService>();
             builder.RegisterType<PlayerService>().As<IPlayerService>();
             builder.RegisterType<FootballClubRepository>().As<IFootballClubRepository>();

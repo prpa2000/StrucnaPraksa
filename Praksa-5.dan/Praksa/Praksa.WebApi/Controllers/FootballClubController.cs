@@ -12,6 +12,8 @@ using Microsoft.Ajax.Utilities;
 using Praksa.Model;
 using Praksa.Service.Common;
 using System.Threading.Tasks;
+using Praksa.Common;
+
 namespace Praksa.WebApi.Controllers
 {
    
@@ -24,11 +26,16 @@ namespace Praksa.WebApi.Controllers
         {
             FootballClubServicer = footballClubService;
         }
-        public async Task<List<FootballClub>> GetAllClubsAsync()
+        public async Task<List<FootballClub>> GetAllClubsAsync(int? pagenumber = null, int? pagesize = null, string sortby = "", string sortorder = "", int? id = null, string name = "", int? numberoftrophies = null)
         {
             try
             {
-                return await FootballClubServicer.GetAllClubsAsync();
+                Paging paging = new Paging(pagenumber, pagesize);
+                Sorting sorting = new Sorting(sortby, sortorder);
+                FootballClubFiltering filters = new FootballClubFiltering(id, name, numberoftrophies);
+
+
+                return await FootballClubServicer.GetAllClubsAsync(paging, sorting, filters);
             }
             catch
             {
@@ -53,15 +60,21 @@ namespace Praksa.WebApi.Controllers
         
 
         [System.Web.Http.HttpPost]
-        public async Task CreateFootballClubAsync (FootballClub footballClub)
+        public async Task<HttpResponseMessage> CreateFootballClubAsync (FootballClub footballClub)
         {
+            if(footballClub == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Football club cannot be null object!");
+            }
             try
             {
                 await FootballClubServicer.CreateFootballClubAsync(footballClub);
+                return Request.CreateResponse(HttpStatusCode.OK, "Football club created!");
+               
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
         
@@ -69,29 +82,36 @@ namespace Praksa.WebApi.Controllers
 
 
         [System.Web.Http.HttpPut]
-        public async Task UpdateFootballClubAsync(int id, FootballClub footballclub)
+        public async Task<HttpResponseMessage> UpdateFootballClubAsync(int id, FootballClub footballclub)
         {
+            if(footballclub == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Football club cannot be null object");
+            }
             try
             {
-                await FootballClubServicer.UpdateFootballClubAsync(id, footballclub);
+                 await FootballClubServicer.UpdateFootballClubAsync(id, footballclub);
+                return Request.CreateResponse(HttpStatusCode.OK, "Football club updated!");
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
 
 
-        public async Task DeleteFootballClubAsync(int id)
+        public async Task<HttpResponseMessage> DeleteFootballClubAsync(int id)
         {
             try
             {
                 await FootballClubServicer.DeleteFootballClubAsync(id);
+                return Request.CreateResponse(HttpStatusCode.OK, "Football club deleted!");
+                
             }
-            catch
+            catch(Exception e) 
             {
-                throw;
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
        
