@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Praksa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95e711beb36fb6c1b7df1a7ff5e91beb1cd12bd3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+552315a2cfbfc908d62e7e0ea0db3a0a3220c53d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Praksa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Praksa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
