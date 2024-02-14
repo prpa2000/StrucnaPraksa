@@ -10,6 +10,8 @@ namespace Praksa.Model.Common
     {
         int Id { get; set; }
         string Name { get; set; }
+
+
         int NumberOfTrophies { get; set; }
     }
 }
