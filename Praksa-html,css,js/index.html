@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+   
+    <title>Document</title>
+</head>
+<body>
+    <h2 class="addnewclub">Dodaj novi klub</h2>
+    <form id="clubForm">
+        <div>
+            <label for="clubId">Id:</label>
+            <input type="number" id="clubId" required>
+        </div>
+        <div class="clubname">
+            <label for="clubName">Ime kluba:</label>
+            <input type="text" id="clubName" required>
+        </div>
+        <div class="clubtrophies">
+            <label for="trophyCount">Broj trofeja:</label>
+            <input type="number" id="trophyCount" required>
+        </div>
+        <div class="clubyear">
+            <label for="year">Godina osnutka:</label>
+            <input type="number" id="year" required>
+        </div>
+        <div>
+            <button type="submit">Dodaj klub</button>
+        </div>
+        
+    </form>
+
+    <h2 class="listofclubs">Popis klubova</h2>
+    <table id="clubTable">
+        <thead>
+            <tr>
+                <th>Ime kluba</th>
+                <th>Broj trofeja</th>
+                <th>Godina osnutka</th>
+                <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody id="clubList"></tbody>
+        
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>

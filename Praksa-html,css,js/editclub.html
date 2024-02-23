@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Uredi klub</title>
+</head>
+<body>
+    <h2 class="addnewclub">Uredi klub</h2>
+    <form id="clubForm">
+        
+        <div class="clubname">
+            <label for="clubName">Ime kluba:</label>
+            <input type="text" id="clubName" required>
+        </div>
+        <div class="clubtrophies">
+            <label for="trophyCount">Broj trofeja:</label>
+            <input type="number" id="trophyCount" required>
+        </div>
+        <div class="clubyear">
+            <label for="year">Godina osnutka:</label>
+            <input type="number" id="year" required>
+        </div>
+        <input type="hidden" id="clubId">
+        <div>
+            <button onclick="updateClub()">Ažuriraj klub</button>
+            <a href="index.html" class="back">Nazad</a>
+        </div>
+    </form>
+    
+    <script src="script.js"></script>
+</body>
+</html>
