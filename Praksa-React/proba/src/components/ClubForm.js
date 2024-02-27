@@ -39,7 +39,6 @@ function ClubForm({ onAddClub }) {
       setFormError("Ime kluba mora sadržavati minimalno 3 znaka.");
       return;
     }
-
     if (trophyCount < 0) {
       setFormError("Broj trofeja ne može biti negativan broj.");
       return;
@@ -49,19 +48,26 @@ function ClubForm({ onAddClub }) {
       return;
     }
 
+    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
+    const existingClub = clubsFromStorage.find(
+      (club) => club.clubId === clubId
+    );
+    if (existingClub) {
+      setFormError("Klub s istim id-em već postoji.");
+      return;
+    }
+
     const newClub = {
       clubId,
       clubName,
       trophyCount,
       year,
     };
-
-    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
     clubsFromStorage.push(newClub);
     localStorage.setItem("clubs", JSON.stringify(clubsFromStorage));
     onAddClub(newClub);
     console.log("Podaci o novom klubu:", newClub);
-
+    setFormError("");
     setClubId("");
     setClubName("");
     setTrophyCount("");

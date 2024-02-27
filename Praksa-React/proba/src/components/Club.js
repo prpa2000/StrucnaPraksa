@@ -25,6 +25,12 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
     }
     onUpdateClub(editedClub);
     setIsEditing(false);
+
+    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
+    const updatedClubs = clubsFromStorage.map((club) =>
+      club.clubId === editedClub.clubId ? editedClub : club
+    );
+    localStorage.setItem("clubs", JSON.stringify(updatedClubs));
   }
 
   function handleDelete() {
