@@ -23,6 +23,18 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
       alert("Ne mogu biti prazna polja prilikom ažuriranja!");
       return;
     }
+    if (editedClub.clubName.length < 3) {
+      alert("Minimalno 3 znaka!");
+      return;
+    }
+    if (editedClub.trophyCount < 0) {
+      alert("Ne može biti negativan broj!");
+      return;
+    }
+    if (editedClub.year < 0) {
+      alert("Ne može biti negativan broj!");
+      return;
+    }
     onUpdateClub(editedClub);
     setIsEditing(false);
 

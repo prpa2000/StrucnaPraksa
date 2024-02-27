@@ -2,10 +2,17 @@ import "./App.css";
 
 import ClubForm from "./components/ClubForm";
 import ClubList from "./components/ClubList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function App() {
   const [clubs, setClubs] = useState([]);
+  useEffect(() => {
+    const loadClubsFromStorage = () => {
+      const storedClubs = JSON.parse(localStorage.getItem("clubs")) || [];
+      setClubs(storedClubs);
+    };
 
+    loadClubsFromStorage();
+  }, []);
   function addClub(newClub) {
     setClubs([...clubs, newClub]);
   }
