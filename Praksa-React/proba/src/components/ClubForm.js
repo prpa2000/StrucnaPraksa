@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "../App.css";
+import axios from "axios";
 function ClubForm({ onAddClub }) {
   const [clubId, setClubId] = useState("");
   const [clubName, setClubName] = useState("");
   const [trophyCount, setTrophyCount] = useState("");
-  const [year, setYear] = useState("");
   const [formError, setFormError] = useState(null);
+
   function handleChange(e) {
     const { name, value } = e.target;
+
     switch (name) {
       case "clubId":
         setClubId(value);
@@ -18,16 +20,15 @@ function ClubForm({ onAddClub }) {
       case "trophyCount":
         setTrophyCount(value);
         break;
-      case "year":
-        setYear(value);
-        break;
+
       default:
         break;
     }
   }
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (!clubId || !clubName || !trophyCount || !year) {
+
+    if (!clubId || !clubName || !trophyCount) {
       setFormError("Popunite sva polja.");
       return;
     }
@@ -43,37 +44,41 @@ function ClubForm({ onAddClub }) {
       setFormError("Broj trofeja ne može biti negativan broj.");
       return;
     }
-    if (year < 0) {
-      setFormError("Godina osnutka ne može biti negativan broj.");
-      return;
-    }
 
-    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
-    const existingClub = clubsFromStorage.find(
-      (club) => club.clubId === clubId
-    );
+    const existingClub = await checkExistingClub(clubId);
     if (existingClub) {
-      setFormError("Klub s istim id-em već postoji.");
+      setFormError("Klub s unesenim ID-om već postoji.");
       return;
     }
-
-    const newClub = {
-      clubId,
-      clubName,
-      trophyCount,
-      year,
+    const newFootballClub = {
+      id: clubId,
+      name: clubName,
+      numberoftrophies: trophyCount,
     };
-    clubsFromStorage.push(newClub);
-    localStorage.setItem("clubs", JSON.stringify(clubsFromStorage));
-    onAddClub(newClub);
-    console.log("Podaci o novom klubu:", newClub);
-    setFormError("");
-    setClubId("");
-    setClubName("");
-    setTrophyCount("");
-    setYear("");
-
-    console.log(clubId);
+    axios
+      .post(`https://localhost:44392/api/FootballClub`, newFootballClub)
+      .then((response) => {
+        const newClub = response.data;
+        console.log(newClub);
+        onAddClub(newClub);
+        setFormError("");
+        setClubId("");
+        setClubName("");
+        setTrophyCount("");
+      })
+      .catch((error) => {
+        console.error("Error adding new club:", error);
+      });
+  }
+  async function checkExistingClub(id) {
+    try {
+      const response = await axios.get(
+        `https://localhost:44392/api/FootballClub/${id}`
+      );
+      return response.data ? true : false;
+    } catch (error) {
+      return false;
+    }
   }
 
   return (
@@ -111,17 +116,7 @@ function ClubForm({ onAddClub }) {
           required
         />
       </div>
-      <div className="clubyear">
-        <label htmlFor="year">Godina osnutka:</label>
-        <input
-          type="number"
-          id="year"
-          name="year"
-          value={year}
-          onChange={handleChange}
-          required
-        />
-      </div>
+
       {formError && <p style={{ color: "red" }}>{formError}</p>}
       <div>
         <button type="submit" onClick={handleSubmit}>

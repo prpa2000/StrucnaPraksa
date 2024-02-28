@@ -2,6 +2,9 @@ import React from "react";
 import Club from "./Club";
 import "../App.css";
 function ClubList({ clubs, onDeleteClub, onUpdateClub }) {
+  if (!Array.isArray(clubs)) {
+    return <div>No clubs available</div>;
+  }
   return (
     <table className="clubTable">
       <thead>
@@ -9,14 +12,14 @@ function ClubList({ clubs, onDeleteClub, onUpdateClub }) {
           <th>Id</th>
           <th>Ime kluba</th>
           <th>Broj trofeja</th>
-          <th>Godina osnutka</th>
+
           <th>Akcije</th>
         </tr>
       </thead>
       <tbody>
-        {clubs.map((club) => (
+        {clubs.map((club, id) => (
           <Club
-            key={club.clubId}
+            key={id}
             club={club}
             onDeleteClub={onDeleteClub}
             onUpdateClub={onUpdateClub}

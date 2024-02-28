@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "../App.css";
+import axios from "axios";
 function Club({ club, onDeleteClub, onUpdateClub }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedClub, setEditedClub] = useState({
-    clubId: club.clubId,
-    clubName: club.clubName,
-    trophyCount: club.trophyCount,
-    year: club.year,
+    clubId: club.clubId || "",
+    clubName: club.clubName || "",
+    trophyCount: club.trophyCount || "",
   });
 
   function handleEdit() {
@@ -18,8 +18,8 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
     setEditedClub({ ...editedClub, [name]: value });
   }
 
-  function handleUpdate() {
-    if (!editedClub.clubName || !editedClub.trophyCount || !editedClub.year) {
+  async function handleUpdate() {
+    if (!editedClub.clubName || !editedClub.trophyCount) {
       alert("Ne mogu biti prazna polja prilikom ažuriranja!");
       return;
     }
@@ -31,32 +31,40 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
       alert("Ne može biti negativan broj!");
       return;
     }
-    if (editedClub.year < 0) {
-      alert("Ne može biti negativan broj!");
-      return;
-    }
-    onUpdateClub(editedClub);
-    setIsEditing(false);
-
-    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
-    const updatedClubs = clubsFromStorage.map((club) =>
-      club.clubId === editedClub.clubId ? editedClub : club
-    );
-    localStorage.setItem("clubs", JSON.stringify(updatedClubs));
+    const editedFootballClub = {
+      id: editedClub.clubId,
+      name: editedClub.clubName,
+      numberoftrophies: editedClub.trophyCount,
+    };
+    await axios
+      .put(
+        `https://localhost:44392/api/FootballClub/${club.id}`,
+        editedFootballClub
+      )
+      .then((response) => {
+        const updatedClub = response.data;
+        console.log(club.id);
+        console.log(updatedClub);
+        editedClub.clubId = club.id;
+        console.log(editedClub);
+        onUpdateClub(editedClub);
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating club:", error);
+      });
   }
 
   function handleDelete() {
     const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
-    const updatedClubs = clubsFromStorage.filter(
-      (c) => c.clubId !== club.clubId
-    );
+    const updatedClubs = clubsFromStorage.filter((c) => c.id !== club.id);
     localStorage.setItem("clubs", JSON.stringify(updatedClubs));
-    onDeleteClub(club.clubId);
+    onDeleteClub(club.id);
   }
 
   return (
     <tr>
-      <td>{club.clubId}</td>
+      <td>{club.id}</td>
       <td>
         {isEditing ? (
           <input
@@ -66,7 +74,7 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
             onChange={handleChange}
           />
         ) : (
-          club.clubName
+          club.name
         )}
       </td>
       <td>
@@ -78,21 +86,10 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
             onChange={handleChange}
           />
         ) : (
-          club.trophyCount
+          club.numberOfTrophies
         )}
       </td>
-      <td>
-        {isEditing ? (
-          <input
-            type="number"
-            name="year"
-            value={editedClub.year}
-            onChange={handleChange}
-          />
-        ) : (
-          club.year
-        )}
-      </td>
+
       <td>
         {isEditing ? (
           <button onClick={handleUpdate} className="savebutton">
