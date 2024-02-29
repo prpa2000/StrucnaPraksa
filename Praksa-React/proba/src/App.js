@@ -1,10 +1,13 @@
 import "./App.css";
-import axios from "axios";
+
 import ClubForm from "./components/ClubForm";
 import ClubList from "./components/ClubList";
-import FilterForm from "./components/FilterForm";
-import { useState, useEffect } from "react";
 
+import { useState, useEffect } from "react";
+import { fetchClubs, addClub } from "./services/api";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
 function App() {
   const [clubs, setClubs] = useState([]);
   const [filter, setFilter] = useState({
@@ -16,107 +19,52 @@ function App() {
     name: "",
     numberoftrophies: null,
   });
+
   useEffect(() => {
-    const fetchClubs = async () => {
-      try {
-        const response = await axios.get(
-          "https://localhost:44392/api/FootballClub"
-        );
-        setClubs(response.data);
-      } catch (error) {
-        console.error("Error fetching clubs:", error);
-      }
-    };
+    fetchData();
+  }, [filter]);
 
-    fetchClubs();
-  }, []);
-
-  async function fetchClubs() {
+  async function fetchData() {
     try {
-      const response = await axios.get(
-        "https://localhost:44392/api/FootballClub",
-        { params: filter }
-      );
-      setClubs(response.data);
+      const data = await fetchClubs(filter);
+      setClubs(data);
     } catch (error) {
       console.error("Error fetching clubs:", error);
     }
   }
-  useEffect(() => {
-    fetchClubs();
-  }, [filter]);
-
-  async function addClub(newClub) {
-    setClubs([...clubs, newClub]);
-    const response = await axios.get(
-      "https://localhost:44392/api/FootballClub"
-    );
-    setClubs(response.data);
-  }
-
-  async function deleteClub(id) {
+  async function handleAddClub(newClub) {
     try {
-      await axios.delete(`https://localhost:44392/api/FootballClub/${id}`);
-      setClubs(clubs.filter((club) => club.clubId !== id));
+      await addClub(newClub);
+      fetchData();
     } catch (error) {
-      console.error("Error deleting club:", error);
-    }
-    const response = await axios.get(
-      "https://localhost:44392/api/FootballClub"
-    );
-    setClubs(response.data);
-  }
-
-  async function updateClub(updatedClub) {
-    setClubs(
-      clubs.map((club) =>
-        club.clubId === updatedClub.clubId ? updatedClub : club
-      )
-    );
-    const response = await axios.get(
-      "https://localhost:44392/api/FootballClub"
-    );
-    setClubs(response.data);
-  }
-
-  async function getFilteredClubs(filters) {
-    console.log(filters);
-    try {
-      let queryParams = new URLSearchParams();
-      for (const key in filters) {
-        if (filters[key]) {
-          queryParams.append(key, filters[key]);
-        }
-      }
-
-      const url = `https://localhost:44392/api/FootballClub?${queryParams.toString()}`;
-      const response = await axios.get(url);
-      console.log(url);
-      console.log(response.data);
-      setClubs(response.data);
-    } catch (error) {
-      console.error("Error fetching filtered clubs:", error);
+      console.error("Error adding club:", error);
     }
   }
 
-  function handleFilterSubmit(filters) {
-    console.log("Filters submitted:", filters);
-    getFilteredClubs(filters);
-  }
-
+  const Layout = () => {
+    return (
+      <>
+        <Navbar></Navbar>
+        <Outlet></Outlet>
+      </>
+    );
+  };
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        { path: "/", element: <Home /> },
+        { path: "/add-clubs", element: <ClubForm onAddClub={handleAddClub} /> },
+        { path: "/clubs", element: <ClubList clubs={clubs} /> },
+      ],
+    },
+  ]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>DODAJ KLUB</h2>
-        <ClubForm onAddClub={addClub} />
-        <h2>POPIS KLUBOVA</h2>
-        <FilterForm onSubmit={handleFilterSubmit} />
-        <ClubList
-          clubs={clubs}
-          onDeleteClub={deleteClub}
-          onUpdateClub={updateClub}
-        />
-      </header>
+    <div className="app">
+      <div className="container">
+        <RouterProvider router={router} />
+      </div>
     </div>
   );
 }

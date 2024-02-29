@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../App.css";
-import axios from "axios";
+import { updateClub, deleteClub } from "../services/api";
+
 function Club({ club, onDeleteClub, onUpdateClub }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedClub, setEditedClub] = useState({
@@ -31,35 +32,26 @@ function Club({ club, onDeleteClub, onUpdateClub }) {
       alert("Ne može biti negativan broj!");
       return;
     }
-    const editedFootballClub = {
-      id: editedClub.clubId,
-      name: editedClub.clubName,
-      numberoftrophies: editedClub.trophyCount,
-    };
-    await axios
-      .put(
-        `https://localhost:44392/api/FootballClub/${club.id}`,
-        editedFootballClub
-      )
-      .then((response) => {
-        const updatedClub = response.data;
-        console.log(club.id);
-        console.log(updatedClub);
-        editedClub.clubId = club.id;
-        console.log(editedClub);
-        onUpdateClub(editedClub);
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error("Error updating club:", error);
+
+    try {
+      const updatedClub = await updateClub(club.id, {
+        name: editedClub.clubName,
+        numberoftrophies: editedClub.trophyCount,
       });
+      onUpdateClub(updatedClub);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating club:", error);
+    }
   }
 
-  function handleDelete() {
-    const clubsFromStorage = JSON.parse(localStorage.getItem("clubs")) || [];
-    const updatedClubs = clubsFromStorage.filter((c) => c.id !== club.id);
-    localStorage.setItem("clubs", JSON.stringify(updatedClubs));
-    onDeleteClub(club.id);
+  async function handleDelete() {
+    try {
+      await deleteClub(club.id);
+      onDeleteClub(club.id);
+    } catch (error) {
+      console.error("Error deleting club:", error);
+    }
   }
 
   return (

@@ -1,95 +1,74 @@
 import React, { useState } from "react";
 import "../App.css";
-import axios from "axios";
-function ClubForm({ onAddClub }) {
-  const [clubId, setClubId] = useState("");
-  const [clubName, setClubName] = useState("");
-  const [trophyCount, setTrophyCount] = useState("");
-  const [formError, setFormError] = useState(null);
+import { addClub } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
+function ClubForm({ onAddClub }) {
+  const [formData, setFormData] = useState({
+    clubId: "",
+    clubName: "",
+    trophyCount: "",
+  });
+  const [formError, setFormError] = useState(null);
+  const navigate = useNavigate();
   function handleChange(e) {
     const { name, value } = e.target;
-
-    switch (name) {
-      case "clubId":
-        setClubId(value);
-        break;
-      case "clubName":
-        setClubName(value);
-        break;
-      case "trophyCount":
-        setTrophyCount(value);
-        break;
-
-      default:
-        break;
-    }
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!clubId || !clubName || !trophyCount) {
+    if (!formData.clubId || !formData.clubName || !formData.trophyCount) {
       setFormError("Popunite sva polja.");
       return;
     }
-    if (clubId < 0) {
+    if (formData.clubId < 0) {
       setFormError("Id kluba ne može biti negativan broj.");
       return;
     }
-    if (clubName.length < 3) {
+    if (formData.clubName.length < 3) {
       setFormError("Ime kluba mora sadržavati minimalno 3 znaka.");
       return;
     }
-    if (trophyCount < 0) {
+    if (formData.trophyCount < 0) {
       setFormError("Broj trofeja ne može biti negativan broj.");
       return;
     }
 
-    const existingClub = await checkExistingClub(clubId);
-    if (existingClub) {
-      setFormError("Klub s unesenim ID-om već postoji.");
-      return;
-    }
-    const newFootballClub = {
-      id: clubId,
-      name: clubName,
-      numberoftrophies: trophyCount,
-    };
-    axios
-      .post(`https://localhost:44392/api/FootballClub`, newFootballClub)
-      .then((response) => {
-        const newClub = response.data;
-        console.log(newClub);
-        onAddClub(newClub);
-        setFormError("");
-        setClubId("");
-        setClubName("");
-        setTrophyCount("");
-      })
-      .catch((error) => {
-        console.error("Error adding new club:", error);
-      });
-  }
-  async function checkExistingClub(id) {
     try {
-      const response = await axios.get(
-        `https://localhost:44392/api/FootballClub/${id}`
-      );
-      return response.data ? true : false;
+      const newFootballClub = {
+        id: formData.clubId,
+        name: formData.clubName,
+        numberoftrophies: formData.trophyCount,
+      };
+      const addedClub = await addClub(newFootballClub);
+      onAddClub(addedClub);
+      setFormError("");
+      setFormData({
+        clubId: "",
+        clubName: "",
+        trophyCount: "",
+      });
+
+      navigate("/clubs");
     } catch (error) {
-      return false;
+      console.error("Error adding new club:", error);
     }
   }
 
   return (
-    <form className="clubForm">
+    <form className="clubForm" onSubmit={handleSubmit}>
       <div>
         <label htmlFor="clubId">Id:</label>
         <input
           type="number"
           id="clubId"
           name="clubId"
-          value={clubId}
+          value={formData.clubId}
           onChange={handleChange}
           required
         />
@@ -100,7 +79,7 @@ function ClubForm({ onAddClub }) {
           type="text"
           id="clubName"
           name="clubName"
-          value={clubName}
+          value={formData.clubName}
           onChange={handleChange}
           required
         />
@@ -110,7 +89,7 @@ function ClubForm({ onAddClub }) {
         <input
           type="number"
           id="trophyCount"
-          value={trophyCount}
+          value={formData.trophyCount}
           name="trophyCount"
           onChange={handleChange}
           required
@@ -119,9 +98,7 @@ function ClubForm({ onAddClub }) {
 
       {formError && <p style={{ color: "red" }}>{formError}</p>}
       <div>
-        <button type="submit" onClick={handleSubmit}>
-          Dodaj klub
-        </button>
+        <button type="submit">Dodaj klub</button>
       </div>
     </form>
   );

@@ -76,20 +76,22 @@ margin: auto;
   cursor: pointer;
 }
 
-.clubTable{
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
+.clubTable {
+  width: 100%;
+  border-collapse: collapse;
 }
 .clubTable th,
 .clubTable td {
-  text-align: center; 
-  
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
+
 .clubTable th {
-  font-size: 25px;
+  background-color: #f2f2f2;
 }
+
 .clubTable td{
   background-color: lightblue;
   font-size:20px;
@@ -113,14 +115,17 @@ margin: auto;
 
 
 .form-container {
-  max-width: 400px;
-  margin: 0 auto;
+  width: 50%; 
+  margin: auto; 
+  text-align: center;
 }
 
 .form-container label {
   display: block;
   margin-bottom: 10px;
+  text-align: center; 
 }
+
 
 .form-container input[type="text"],
 .form-container input[type="number"] {
@@ -131,27 +136,84 @@ margin: auto;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  text-align: center;
 }
 
-.form-container button[type="submit"] {
+.form-container button[type="submit"],
+.form-container button[type="button"],
+.filterbutton {
   background-color: #4caf50;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px; 
   border: none;
-  border-radius: 4px;
+  border-radius: 6px; 
   cursor: pointer;
+  font-size: 16px; 
 }
 
-.form-container button[type="submit"]:hover {
+.form-container button[type="submit"]:hover,
+.form-container button[type="button"]:hover,
+.filterbutton:hover {
   background-color: #45a049;
 }
 
-.filterbutton{
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.filterbutton {
+  margin-bottom: 10px; 
+  margin-left: 5px; 
+  font-weight: bold; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+.clubListContainer {
+  margin-top: 20px;
+}
+.noClubsMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #666;
+}
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.home-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.home-container p {
+  font-size: 1.1rem;
   margin-bottom: 10px;
+}
+
+.form-container select {
+  width: 200px;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.form-container select:focus {
+  outline: none;
+}
+
+.form-container option {
+  background-color: white;
+  color: black;
+}
+
+.form-container option:hover {
+  background-color: #e0e0e0;
+}
+.football-image {
+  width: 80%; 
+  max-width: 600px; 
+  display: block; 
+  margin: 20px auto; 
 }

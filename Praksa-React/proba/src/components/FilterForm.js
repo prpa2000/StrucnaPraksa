@@ -1,30 +1,34 @@
 import React, { useState } from "react";
 import "../App.css";
+
 function FilterForm({ onSubmit }) {
   const [filters, setFilters] = useState({
     pagenumber: 1,
     pagesize: 10,
     sortby: "",
     sortorder: "",
-    id: "",
     name: "",
     numberoftrophies: "",
   });
   const [showFilters, setShowFilters] = useState(false);
-  const handleInputChange = (e) => {
+
+  function handleInputChange(e) {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
     }));
-  };
-  const handleSubmit = (e) => {
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
     onSubmit(filters);
-  };
-  const toggleFilters = () => {
+  }
+
+  function toggleFilters() {
     setShowFilters(!showFilters);
-  };
+  }
+
   return (
     <div className="form-container">
       <button onClick={toggleFilters} className="filterbutton">
@@ -51,24 +55,29 @@ function FilterForm({ onSubmit }) {
             />
           </label>
           <label>
-            Sortiraj po (Name, NumberOfTrophies):
-            <input
-              type="text"
+            Sortiraj po:
+            <select
               name="sortby"
               value={filters.sortby}
               onChange={handleInputChange}
-            />
+            >
+              <option value="">- </option>
+              <option value="Name">Ime kluba</option>
+              <option value="NumberOfTrophies">Broj trofeja</option>
+            </select>
           </label>
           <label>
-            Sort Order:
-            <input
-              type="text"
+            Redoslijed sortiranja:
+            <select
               name="sortorder"
               value={filters.sortorder}
               onChange={handleInputChange}
-            />
+            >
+              <option value=""> -</option>
+              <option value="asc">Rastući</option>
+              <option value="desc">Padajući</option>
+            </select>
           </label>
-
           <label>
             Ime kluba:
             <input
@@ -87,8 +96,7 @@ function FilterForm({ onSubmit }) {
               onChange={handleInputChange}
             />
           </label>
-
-          <button type="submit">Apply Filters</button>
+          <button type="submit">Primijeni</button>
         </form>
       )}
     </div>
